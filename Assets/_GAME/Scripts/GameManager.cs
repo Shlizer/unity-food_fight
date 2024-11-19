@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Game
+namespace FoodFight
 {
-    [CreateAssetMenu(fileName = "Game Manager", menuName = "GAME/Manager")]
+    [CreateAssetMenu(fileName = "Game Manager", menuName = "Food Fight/Manager")]
     public class GameManager : ScriptableObject
     {
         [Header("Gameplay flow")]

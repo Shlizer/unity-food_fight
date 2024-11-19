@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Game
+namespace FoodFight
 {
     public class BackgroundPicker : MonoBehaviour
     {

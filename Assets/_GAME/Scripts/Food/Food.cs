@@ -1,62 +1,65 @@
 using UnityEngine;
 
-public class Food : MonoBehaviour
+namespace FoodFight
 {
-    public GameObject whole;
-    public GameObject sliced;
-
-    private Rigidbody foodRigidbody;
-    private Collider foodCollider;
-    private ParticleSystem juice;
-
-    private void Awake()
+    public class Food : MonoBehaviour
     {
-        foodRigidbody = GetComponent<Rigidbody>();
-        foodCollider = GetComponent<Collider>();
-        juice = GetComponentInChildren<ParticleSystem>();
-        whole.SetActive(true);
-        sliced.SetActive(false);
-        whole.transform.rotation = Random.rotation;
-    }
+        public GameObject whole;
+        public GameObject sliced;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        private Rigidbody foodRigidbody;
+        private Collider foodCollider;
+        private ParticleSystem juice;
+
+        private void Awake()
         {
-            BladeBase blade = other.GetComponent<BladeBase>();
-            Slice(blade.direction, blade.transform.position, blade.GetForce());
-            blade.AddScore();
+            foodRigidbody = GetComponent<Rigidbody>();
+            foodCollider = GetComponent<Collider>();
+            juice = GetComponentInChildren<ParticleSystem>();
+            whole.SetActive(true);
+            sliced.SetActive(false);
+            whole.transform.rotation = Random.rotation;
         }
-    }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.CompareTag("Player"))
+        private void OnTriggerEnter(Collider other)
         {
-            BladeBase blade = collision.collider.GetComponent<BladeBase>();
-            Slice(blade.direction, blade.transform.position, blade.GetForce());
-            blade.AddScore();
+            if (other.CompareTag("Player"))
+            {
+                BladeBase blade = other.GetComponent<BladeBase>();
+                Slice(blade.direction, blade.transform.position, blade.GetForce());
+                blade.AddScore();
+            }
         }
-    }
 
-    private void Slice(Vector3 direction, Vector3 position, float force)
-    {
-        whole.SetActive(false);
-        sliced.SetActive(true);
-
-        foodCollider.enabled = false;
-        juice.Play();
-
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        sliced.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-
-        Rigidbody[] slices = sliced.GetComponentsInChildren<Rigidbody>();
-
-        foreach (Rigidbody slice in slices)
+        private void OnCollisionEnter(Collision collision)
         {
-            slice.linearVelocity = foodRigidbody.linearVelocity;
-            slice.AddForceAtPosition(direction * force, position, ForceMode.Impulse);
+            if (collision.collider.CompareTag("Player"))
+            {
+                BladeBase blade = collision.collider.GetComponent<BladeBase>();
+                Slice(blade.direction, blade.transform.position, blade.GetForce());
+                blade.AddScore();
+            }
+        }
+
+        private void Slice(Vector3 direction, Vector3 position, float force)
+        {
+            whole.SetActive(false);
+            sliced.SetActive(true);
+
+            foodCollider.enabled = false;
+            juice.Play();
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+            sliced.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
+            Rigidbody[] slices = sliced.GetComponentsInChildren<Rigidbody>();
+
+            foreach (Rigidbody slice in slices)
+            {
+                slice.linearVelocity = foodRigidbody.linearVelocity;
+                slice.AddForceAtPosition(direction * force, position, ForceMode.Impulse);
+            }
         }
     }
 }

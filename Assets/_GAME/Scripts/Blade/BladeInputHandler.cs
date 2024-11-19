@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game
+namespace FoodFight
 {
     public class BladeInputHandler : MonoBehaviour
     {

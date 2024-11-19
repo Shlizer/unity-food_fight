@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Game
+namespace FoodFight.UI
 {
     public class ScoreShower : MonoBehaviour
     {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game
+namespace FoodFight
 {
-    [CreateAssetMenu(fileName = "Food List", menuName = "GAME/Food List")]
+    [CreateAssetMenu(fileName = "Food List", menuName = "Food Fight/Food List")]
     public class FoodList : ScriptableObject
     {
         public List<Food> prefabs;

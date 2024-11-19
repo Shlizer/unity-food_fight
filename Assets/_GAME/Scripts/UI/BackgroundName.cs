@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Game
+namespace FoodFight.UI
 {
     public class BackgroundName : MonoBehaviour
     {
