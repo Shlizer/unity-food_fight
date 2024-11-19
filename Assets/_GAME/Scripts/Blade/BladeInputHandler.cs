@@ -42,9 +42,9 @@ namespace FoodFight
             if (gameManager.inputModeForced == InputMode.Unknown)
             {
                 if (HasMultitouch() && gameManager.inputMode != InputMode.Touch)
-                    ChangeInputMode(InputMode.Mouse);
-                else if (!HasMultitouch() && gameManager.inputMode != InputMode.Mouse)
                     ChangeInputMode(InputMode.Touch);
+                else if (!HasMultitouch() && gameManager.inputMode != InputMode.Mouse)
+                    ChangeInputMode(InputMode.Mouse);
             } else
             {
                 if (gameManager.inputMode != gameManager.inputModeForced)
@@ -79,7 +79,7 @@ namespace FoodFight
             }
         }
 
-        private bool HasMultitouch() => !(Input.touchSupported && Input.multiTouchEnabled);
+        private bool HasMultitouch() => Input.touchSupported && Input.multiTouchEnabled;
 
         void Update()
         {

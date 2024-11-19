@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Game Manager
   m_EditorClassIdentifier: 
   soundManager: {fileID: 11400000, guid: 80c6477ad7511c14b8dece1c1b9495c5, type: 2}
-  score: 264
+  score: 20
   OnGameStateChange:
     m_PersistentCalls:
       m_Calls: []
@@ -21,7 +21,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   backgroundList: {fileID: 11400000, guid: 4db1f0e887d51b84580a85a74cd38a78, type: 2}
-  selectedBackground: 0
+  selectedBackground: 2
   OnBackgroundChange:
     m_PersistentCalls:
       m_Calls: []
@@ -35,4 +35,4 @@ MonoBehaviour:
   minSliceVelocity: 0.01
   sliceForce: 5
   inputMode: 1
-  inputModeForced: 1
+  inputModeForced: 0
