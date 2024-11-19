@@ -7,9 +7,12 @@ namespace FoodFight
     public class GameManager : ScriptableObject
     {
         [Header("Gameplay flow")]
-        public bool isPlaying { get; private set; } = false;
+        public SoundManager soundManager;
+        public GameState gameState { get; private set; } = GameState.Stopped;
+        //public bool isPlaying { get; private set; } = false;
+        //public bool isPaused { get; private set; }
         public int score = 0;
-        [HideInInspector] public UnityEvent<bool> OnPlayChange;
+        [HideInInspector] public UnityEvent<GameState> OnGameStateChange;
         [HideInInspector] public UnityEvent<int> OnScoreChange;
 
         [Header("Background")]
@@ -33,9 +36,12 @@ namespace FoodFight
         public float minSliceVelocity = 0.01f;
         public float sliceForce = 5f;
         public InputMode inputMode = InputMode.Unknown;
+        public InputMode inputModeForced = InputMode.Unknown;
 
         public void NextBackground()
         {
+            if (selectedBackground < 0) selectedBackground = Random.Range(0, backgroundList.prefabs.Count);
+
             if (selectedBackground == backgroundList.prefabs.Count - 1) selectedBackground = 0;
             else selectedBackground++;
 
@@ -44,6 +50,8 @@ namespace FoodFight
 
         public void PrevBackground()
         {
+            if (selectedBackground < 0) selectedBackground = Random.Range(0, backgroundList.prefabs.Count);
+
             if (selectedBackground == 0) selectedBackground = backgroundList.prefabs.Count - 1;
             else selectedBackground--;
 
@@ -54,30 +62,58 @@ namespace FoodFight
         {
             this.score += score;
             OnScoreChange?.Invoke(this.score);
+
+            soundManager.PlayGameScored();
+        }
+
+        private void ChangeGameState(GameState state)
+        {
+            OnGameStateChange?.Invoke(state);
+            gameState = state;
         }
 
         public void Play()
         {
             score = 0;
             OnScoreChange?.Invoke(score);
-            isPlaying = true;
-            OnPlayChange?.Invoke(isPlaying);
+            ChangeGameState(GameState.Playing);
+            Time.timeScale = 1;
+        }
+
+        public void Pause()
+        {
+            ChangeGameState(GameState.Paused);
+            Time.timeScale = 0;
+        }
+
+        public void Resume()
+        {
+            ChangeGameState(GameState.Playing);
+            Time.timeScale = 1;
         }
 
         public void Stop()
         {
-            isPlaying = false;
-            OnPlayChange?.Invoke(isPlaying);
+            ChangeGameState(GameState.Stopped);
+            Time.timeScale = 0;
         }
 
         public void Exit() => Application.Quit();
+    }
 
-        [System.Serializable]
-        public enum InputMode
-        {
-            Unknown,
-            Mouse,
-            Touch,
-        }
+    [System.Serializable]
+    public enum InputMode
+    {
+        Unknown,
+        Mouse,
+        Touch,
+    }
+
+    [System.Serializable]
+    public enum GameState
+    {
+        Stopped,
+        Paused,
+        Playing,
     }
 }

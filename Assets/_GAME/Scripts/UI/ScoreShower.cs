@@ -12,34 +12,33 @@ namespace FoodFight.UI
         public float maxScale = 2f;
         public float scaleDuration = 0.3f;
 
-        private Coroutine coroutine;
-
         private void Awake()
         {
+            if (gameManager == null) gameManager = GetComponentInParent<GameManagerProvider>()?.GetGameManager();
+
             gameManager.score = 0;
             gameManager.OnScoreChange.AddListener(OnChange);
-            gameManager.OnPlayChange.AddListener(ChangePlaying);
-            ChangePlaying(gameManager.isPlaying);
             OnChange(gameManager.score);
         }
 
         private void OnDestroy()
         {
             gameManager.OnScoreChange.RemoveListener(OnChange);
-            gameManager.OnPlayChange.RemoveListener(ChangePlaying);
         }
 
-        void ChangePlaying(bool playing)
+        private void OnDisable()
         {
-            if (playing) gameObject.SetActive(true); else gameObject.SetActive(false);
+            StopAllCoroutines();
         }
 
         private void OnChange(int score)
         {
             text.text = score.ToString();
 
-            if (coroutine != null) StopCoroutine(coroutine);
-            coroutine = StartCoroutine(Scale());
+            if (!gameObject.activeSelf) return;
+
+            StopAllCoroutines();
+            StartCoroutine(Scale());
 
             effectOnChange.Stop();
             effectOnChange.Play();

@@ -5391,6 +5391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whole: {fileID: 578974672926296099}
   sliced: {fileID: 3906776507432821525}
+  score: 2
 --- !u!1 &7524986790800528301
 GameObject:
   m_ObjectHideFlags: 0

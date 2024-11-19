@@ -9,10 +9,14 @@ namespace FoodFight
 
         private void Awake()
         {
-            if (gameManager.selectedBackground < 0) gameManager.selectedBackground = Random.Range(0, gameManager.backgroundList.prefabs.Count);
-            SpawnBackground();
+            if (gameManager == null) gameManager = GetComponentInParent<GameManagerProvider>()?.GetGameManager();
 
             gameManager.OnBackgroundChange.AddListener(OnChange);
+        }
+
+        private void Start()
+        {
+            gameManager.NextBackground();
         }
 
         private void OnDestroy()

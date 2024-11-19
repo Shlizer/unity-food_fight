@@ -6,6 +6,7 @@ namespace FoodFight
     {
         public GameObject whole;
         public GameObject sliced;
+        public int score = 1;
 
         private Rigidbody foodRigidbody;
         private Collider foodCollider;
@@ -27,7 +28,7 @@ namespace FoodFight
             {
                 BladeBase blade = other.GetComponent<BladeBase>();
                 Slice(blade.direction, blade.transform.position, blade.GetForce());
-                blade.AddScore();
+                blade.AddScore(score);
             }
         }
 
@@ -37,9 +38,11 @@ namespace FoodFight
             {
                 BladeBase blade = collision.collider.GetComponent<BladeBase>();
                 Slice(blade.direction, blade.transform.position, blade.GetForce());
-                blade.AddScore();
+                blade.AddScore(score);
             }
         }
+
+        public void SetScore(int score) => this.score = score;
 
         private void Slice(Vector3 direction, Vector3 position, float force)
         {

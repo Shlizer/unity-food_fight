@@ -14,26 +14,42 @@ namespace FoodFight
 
         void Awake()
         {
+            if (gameManager == null) gameManager = GetComponentInParent<GameManagerProvider>()?.GetGameManager();
+
+            gameManager.inputMode = InputMode.Unknown;
+            Cursor.lockState = CursorLockMode.Confined;
             mainCamera = Camera.main;
-            gameManager.OnPlayChange.AddListener(ChangePlaying);
+            gameManager.OnGameStateChange.AddListener(ChangeGameState);
         }
 
         private void OnDestroy()
         {
-            gameManager.OnPlayChange.RemoveListener(ChangePlaying);
+            gameManager.OnGameStateChange.RemoveListener(ChangeGameState);
         }
 
-        void ChangePlaying(bool playing)
+        void ChangeGameState(GameState playing)
         {
-            if (playing) StartPlaying(); else StopPlaying();
+            if (playing == GameState.Playing) StartPlaying(); else StopPlaying();
         }
 
         void StartPlaying()
         {
-            ChangeInputMode(HasMultitouch()
-                ? GameManager.InputMode.Touch
-                : GameManager.InputMode.Mouse
-            );
+            CheckInputMode();
+        }
+
+        void CheckInputMode()
+        {
+            if (gameManager.inputModeForced == InputMode.Unknown)
+            {
+                if (HasMultitouch() && gameManager.inputMode != InputMode.Touch)
+                    ChangeInputMode(InputMode.Mouse);
+                else if (!HasMultitouch() && gameManager.inputMode != InputMode.Mouse)
+                    ChangeInputMode(InputMode.Touch);
+            } else
+            {
+                if (gameManager.inputMode != gameManager.inputModeForced)
+                    ChangeInputMode(gameManager.inputModeForced);
+            }
         }
 
         void StopPlaying()
@@ -45,15 +61,16 @@ namespace FoodFight
         {
             for (int i = 0; i < blades.Count; i++) Destroy(blades[i]?.gameObject);
             blades.Clear();
+            gameManager.inputMode = InputMode.Unknown;
         }
 
-        public void ChangeInputMode(GameManager.InputMode inputMode)
+        public void ChangeInputMode(InputMode inputMode)
         {
-            gameManager.inputMode = inputMode;
-
             ClearBlades();
 
-            if (gameManager.inputMode == GameManager.InputMode.Mouse)
+            gameManager.inputMode = inputMode;
+
+            if (gameManager.inputMode == InputMode.Mouse)
             {
                 blades.Add(Instantiate<BladeBase>(bladeMousePrefab));
                 blades[0].transform.parent = transform;
@@ -66,7 +83,7 @@ namespace FoodFight
 
         void Update()
         {
-            if (gameManager.inputMode == GameManager.InputMode.Touch)
+            if (gameManager.inputMode == InputMode.Touch)
             {
                 while (blades.Count < Input.touchCount)
                 {
@@ -92,12 +109,8 @@ namespace FoodFight
         }
         private void LateUpdate()
         {
-            if (!gameManager.isPlaying) return;
-
-            if (HasMultitouch() && gameManager.inputMode != GameManager.InputMode.Touch)
-                ChangeInputMode(GameManager.InputMode.Mouse);
-            else if (!HasMultitouch() && gameManager.inputMode != GameManager.InputMode.Mouse)
-                ChangeInputMode(GameManager.InputMode.Touch);
+            if (gameManager.gameState != GameState.Playing) return;
+            CheckInputMode();
         }
     }
 }

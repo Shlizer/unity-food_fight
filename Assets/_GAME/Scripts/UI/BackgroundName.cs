@@ -9,6 +9,8 @@ namespace FoodFight.UI
 
         private void Awake()
         {
+            if (gameManager == null) gameManager = GetComponentInParent<GameManagerProvider>()?.GetGameManager();
+
             gameManager.OnBackgroundChange.AddListener(OnChange);
         }
 

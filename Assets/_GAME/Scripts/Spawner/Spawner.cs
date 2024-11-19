@@ -10,21 +10,32 @@ namespace FoodFight
         public FoodList foodList;
 
         private Collider spawnArea;
+        private bool isSpawning = false;
 
         void Awake()
         {
             spawnArea = GetComponent<Collider>();
-            gameManager.OnPlayChange.AddListener(ChangePlaying);
+            if (gameManager == null) gameManager = GetComponentInParent<GameManagerProvider>()?.GetGameManager();
+            gameManager.OnGameStateChange.AddListener(ChangePlaying);
         }
 
         private void OnDestroy()
         {
-            gameManager.OnPlayChange.RemoveListener(ChangePlaying);
+            gameManager.OnGameStateChange.RemoveListener(ChangePlaying);
         }
 
-        void ChangePlaying(bool playing)
+        void ChangePlaying(GameState state)
         {
-            if (playing) StartCoroutine(Spawn()); else StopAllCoroutines();
+            if (state == GameState.Playing && !isSpawning)
+            {
+                StartCoroutine(Spawn());
+                isSpawning = true;
+            }
+            if (state == GameState.Stopped)
+            {
+                StopAllCoroutines();
+                isSpawning = false;
+            }
         }
 
         private IEnumerator Spawn()
@@ -33,7 +44,8 @@ namespace FoodFight
 
             while (enabled)
             {
-                GameObject prefab = foodList.prefabs[Random.Range(0, foodList.prefabs.Count)].gameObject;
+                var element = foodList.elements[Random.Range(0, foodList.elements.Count)];
+                GameObject prefab = element.prefab.gameObject;
 
                 Vector3 position = new Vector3(
                     Random.Range(spawnArea.bounds.min.x, spawnArea.bounds.max.x),
@@ -43,6 +55,8 @@ namespace FoodFight
 
                 Quaternion rotation = Quaternion.Euler(0, 0, Random.Range(gameManager.minAngle, gameManager.maxAngle));
                 GameObject food = Instantiate(prefab, position, rotation);
+                food.transform.parent = transform;
+                food.GetComponent<Food>().SetScore(element.score);
                 Destroy(food, gameManager.maxLifetime);
 
                 float force = Random.Range(gameManager.maxForce, gameManager.maxForce);

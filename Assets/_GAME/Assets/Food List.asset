@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06bccc6bc1ce5074cb729b84bed097cb, type: 3}
   m_Name: Food List
   m_EditorClassIdentifier: 
-  prefabs:
-  - {fileID: 4188547228947217090, guid: a1db23167f097a44b8f40cc10c9bb3bb, type: 3}
-  - {fileID: -7354509508925613758, guid: dc09d94cf8c600c4eb7d47d9e2726fb6, type: 3}
-  - {fileID: 4475276871899914116, guid: fdf4b782667e5f948aac7ab4188e519a, type: 3}
+  elements:
+  - prefab: {fileID: 4188547228947217090, guid: a1db23167f097a44b8f40cc10c9bb3bb, type: 3}
+    score: 1
+    probability: 1
+  - prefab: {fileID: -7354509508925613758, guid: dc09d94cf8c600c4eb7d47d9e2726fb6, type: 3}
+    score: 2
+    probability: 1
+  - prefab: {fileID: 4475276871899914116, guid: fdf4b782667e5f948aac7ab4188e519a, type: 3}
+    score: 3
+    probability: 1
