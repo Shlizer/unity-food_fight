@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eed3dd80380887e4e8c9bce7402db8c0, type: 3}
+  m_Name: Game Manager
+  m_EditorClassIdentifier: 
+  backgroundList: {fileID: 11400000, guid: 4db1f0e887d51b84580a85a74cd38a78, type: 2}
+  selectedBackground: 0
+  OnBackgroundChange:
+    m_PersistentCalls:
+      m_Calls: []
+  minSpawnDelay: 0.25
+  maxSpawnDelay: 0.8
+  minAngle: -15
+  maxAngle: 15
+  minForce: 11
+  maxForce: 17
+  maxLifetime: 5
+  minSliceVelocity: 0.01
+  sliceForce: 5

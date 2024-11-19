@@ -70,3 +70,10 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+/Assets/Blink.meta
+/Assets/Food Pack-Demo.meta
+/Assets/Layer Lab.meta
+/Assets/Poly-Survival Food.meta
+/Assets/vHierarchy.meta
+/Assets/_GAME/BG_Materials
+/Assets/_GAME/BG_Materials.meta
